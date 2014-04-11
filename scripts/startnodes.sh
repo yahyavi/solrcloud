@@ -1,0 +1,3 @@
+source deploynodes.sh
+
+startnodes
