@@ -22,7 +22,7 @@ cd ..
 [ -f solr-4.7.2.tgz ] || wget -c "http://apache.mirrors.pair.com/lucene/solr/4.7.2/solr-4.7.2.tgz"
 [ -f zookeeper-3.4.6.tar.gz ] || wget -c "http://www.bizdirusa.com/mirrors/apache/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
 
-[ -d solr-4.7.2 ] || tar -zxvf solr-4.7.0.tgz
+[ -d solr-4.7.2 ] || tar -zxvf solr-4.7.2.tgz
 [ -d zookeeper-3.4.6 ] || tar -zxvf zookeeper-3.4.6.tar.gz
 
 echo
