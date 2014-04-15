@@ -45,7 +45,7 @@
     that avoids logging every request
 -->
 
-<schema name="example" version="1.5">
+<schema name="MyMentions" version="1.5">
   <!-- attribute "name" is the name of this schema and is only used for display purposes.
        version="x.y" is Solr's version number for the schema syntax and 
        semantics.  It should not normally be changed by applications.
@@ -63,7 +63,7 @@
             (int, float, boolean, string...)
      -->
 
-<fields>
+ <fields>
    <!-- Valid attributes for fields:
      name: mandatory - the name for the field
      type: mandatory - the name of a field type from the 
@@ -99,29 +99,36 @@
        when adding a document.
    -->
 
+   <field name="id" type="string" indexed="true" stored="true" required="true" />
+   <field name="language_s" type="string" indexed="true" stored="true" required="false" />
+   <field name="url" type="string" indexed="true" stored="true" required="true" />
+   <field name="blogurl" type="string" indexed="true" stored="true" required="true" />
+   <field name="blogdesc" type="textexact" indexed="true" stored="true" required="true" />
+   <field name="blogurl_sort" type="string" indexed="true" stored="true" required="true" />
+   <field name="blogdesc_sort" type="string" indexed="true" stored="true" required="true" />
+   <field name="published" type="tdate" indexed="true" stored="true" />
+   <field name="timestamp" type="tdate" indexed="true" stored="true" default="NOW" multiValued="false"/>
+   <field name="snippet" type="string" indexed="true" stored="true" />
+   <field name="snippet_sort" type="string" indexed="true" stored="true" />
+   <field name="snippet_sort2" type="string" indexed="true" stored="true" />
+   <field name="summary" type="text_kstem" indexed="true" stored="true" />
+   <field name="sentiment" type="string" indexed="true" stored="true" />
+   <field name="topic" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="topics_ner" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="topics_statistical" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="pkg" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="content" type="text_kstem" indexed="true" stored="false" required="true" />
+   <field name="content_exact" type="text_ws" indexed="true" stored="false" required="true" />
+
+
    <!-- field names should consist of alphanumeric or underscore characters only and
       not start with a digit.  This is not currently strictly enforced,
       but other field names will not have first class support from all components
       and back compatibility is not guaranteed.  Names with both leading and
       trailing underscores (e.g. _version_) are reserved.
-   -->
 
-   <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml
-      or Solr won't start. _version_ and update log are required for SolrCloud
-   --> 
-   <field name="_version_" type="long" indexed="true" stored="true"/>
-   
-   <!-- points to the root document of a block of nested documents. Required for nested
-      document support, may be removed otherwise
-   -->
-   <field name="_root_" type="string" indexed="true" stored="false"/>
-
-   <!-- Only remove the "id" field if you have a very good reason to. While not strictly
-     required, it is highly recommended. A <uniqueKey> is present in almost all Solr 
-     installations. See the <uniqueKey> declaration below where <uniqueKey> is set to "id".
-   -->   
-   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
         
+   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
    <field name="sku" type="text_en_splitting_tight" indexed="true" stored="true" omitNorms="true"/>
    <field name="name" type="text_general" indexed="true" stored="true"/>
    <field name="manu" type="text_general" indexed="true" stored="true" omitNorms="true"/>
@@ -136,6 +143,7 @@
 
    <field name="store" type="location" indexed="true" stored="true"/>
 
+   -->
    <!-- Common metadata fields, named specifically to match up with
      SolrCell metadata when parsing rich documents such as Word, PDF.
      Some fields are multiValued only because Tika currently may return
@@ -143,7 +151,7 @@
      but there are some which come from the client context:
        "content_type": From the HTTP headers of incoming stream
        "resourcename": From SolrCell request param resource.name
-   -->
+
    <field name="title" type="text_general" indexed="true" stored="true" multiValued="true"/>
    <field name="subject" type="text_general" indexed="true" stored="true"/>
    <field name="description" type="text_general" indexed="true" stored="true"/>
@@ -156,36 +164,40 @@
    <field name="content_type" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="last_modified" type="date" indexed="true" stored="true"/>
    <field name="links" type="string" indexed="true" stored="true" multiValued="true"/>
-
+   -->
    <!-- Main body of document extracted by SolrCell.
         NOTE: This field is not indexed by default, since it is also copied to "text"
         using copyField below. This is to save space. Use this field for returning and
-        highlighting document content. Use the "text" field to search the content. -->
+        highlighting document content. Use the "text" field to search the content.
+
    <field name="content" type="text_general" indexed="false" stored="true" multiValued="true"/>
+
+   -->
    
 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
-   <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
+   <field name="text" type="text_kstem" indexed="true" stored="false" multiValued="true"/>
 
    <!-- catchall text field that indexes tokens both normally and in reverse for efficient
         leading wildcard queries. -->
    <field name="text_rev" type="text_general_rev" indexed="true" stored="false" multiValued="true"/>
 
    <!-- non-tokenized version of manufacturer to make it easier to sort or group
-        results by manufacturer.  copied from "manu" via copyField -->
+        results by manufacturer.  copied from "manu" via copyField 
    <field name="manu_exact" type="string" indexed="true" stored="false"/>
 
    <field name="payloads" type="payloads" indexed="true" stored="true"/>
+   -->
 
+
+   <field name="_version_" type="long" indexed="true" stored="true"/>
 
    <!--
      Some fields such as popularity and manu_exact could be modified to
      leverage doc values:
-     <field name="popularity" type="int" indexed="true" stored="true" docValues="true" />
-     <field name="manu_exact" type="string" indexed="false" stored="false" docValues="true" />
-     <field name="cat" type="string" indexed="true" stored="true" docValues="true" multiValued="true"/>
-
+     <field name="popularity" type="int" indexed="true" stored="true" docValues="true" default="0" />
+     <field name="manu_exact" type="string" indexed="false" stored="false" docValues="true" default="" />
 
      Although it would make indexing slightly slower and the index bigger, it
      would also make the index faster to load, more memory-efficient and more
@@ -204,8 +216,8 @@
    <dynamicField name="*_ss" type="string"  indexed="true"  stored="true" multiValued="true"/>
    <dynamicField name="*_l"  type="long"   indexed="true"  stored="true"/>
    <dynamicField name="*_ls" type="long"   indexed="true"  stored="true"  multiValued="true"/>
-   <dynamicField name="*_t"  type="text_general"    indexed="true"  stored="true"/>
-   <dynamicField name="*_txt" type="text_general"   indexed="true"  stored="true" multiValued="true"/>
+   <dynamicField name="*_t"  type="text_kstem"    indexed="true"  stored="true"/>
+   <dynamicField name="*_txt" type="text_kstem"   indexed="true"  stored="true" multiValued="true"/>
    <dynamicField name="*_en"  type="text_en"    indexed="true"  stored="true" multiValued="true"/>
    <dynamicField name="*_b"  type="boolean" indexed="true" stored="true"/>
    <dynamicField name="*_bs" type="boolean" indexed="true" stored="true"  multiValued="true"/>
@@ -232,7 +244,7 @@
    <dynamicField name="*_c"   type="currency" indexed="true"  stored="true"/>
 
    <dynamicField name="ignored_*" type="ignored" multiValued="true"/>
-   <dynamicField name="attr_*" type="text_general" indexed="true" stored="true" multiValued="true"/>
+   <dynamicField name="attr_*" type="text_kstem" indexed="true" stored="true" multiValued="true"/>
 
    <dynamicField name="random_*" type="random" />
 
@@ -248,7 +260,7 @@
  <!-- Field to use to determine and enforce document uniqueness. 
       Unless this field is marked with required="false", it will be a required field
    -->
- <uniqueKey>id</uniqueKey>
+ <uniqueKey>url</uniqueKey>
 
  <!-- DEPRECATED: The defaultSearchField is consulted by various query parsers when
   parsing a query string that isn't explicit about the field.  Machine (non-user)
@@ -263,11 +275,17 @@
   required or optional, assuming the clause isn't already marked by some operator.
   The default is OR, which is generally assumed so it is not a good idea to change it
   globally here.  The "q.op" request parameter takes precedence over this.
- <solrQueryParser defaultOperator="OR"/> -->
+-->
+
+ <solrQueryParser defaultOperator="AND"/> 
+
+
+   <copyField source="content" dest="text"/>
+
 
   <!-- copyField commands copy one field to another at the time a document
         is added to the index.  It's used either to index the same field differently,
-        or to add multiple fields to the same field for easier/faster searching.  -->
+        or to add multiple fields to the same field for easier/faster searching.  
 
    <copyField source="cat" dest="text"/>
    <copyField source="name" dest="text"/>
@@ -275,11 +293,11 @@
    <copyField source="features" dest="text"/>
    <copyField source="includes" dest="text"/>
    <copyField source="manu" dest="manu_exact"/>
-
-   <!-- Copy the price into a currency enabled field (default USD) -->
+-->
+   <!-- Copy the price into a currency enabled field (default USD)
    <copyField source="price" dest="price_c"/>
-
-   <!-- Text fields from SolrCell to search by default in our catch-all field -->
+-->
+   <!-- Text fields from SolrCell to search by default in our catch-all field
    <copyField source="title" dest="text"/>
    <copyField source="author" dest="text"/>
    <copyField source="description" dest="text"/>
@@ -288,10 +306,10 @@
    <copyField source="content_type" dest="text"/>
    <copyField source="resourcename" dest="text"/>
    <copyField source="url" dest="text"/>
-
-   <!-- Create a string version of author for faceting -->
+-->
+   <!-- Create a string version of author for faceting
    <copyField source="author" dest="author_s"/>
-	
+-->
    <!-- Above, multiple source fields are copied to the [text] field. 
 	  Another way to map multiple source fields to the same 
 	  destination field is to use the dynamic field syntax. 
@@ -441,10 +459,11 @@
     </fieldType>
     -->
 
-    <!-- A text field that only splits on whitespace for exact matching of words -->
+    <!-- A text field that only splits on whitespace for exact matching of words. Also lowercases. -->
     <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
       <analyzer>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
       </analyzer>
     </fieldType>
 
@@ -453,7 +472,7 @@
 	 removes stop words from case-insensitive "stopwords.txt"
 	 (empty by default), and down cases.  At query time only, it
 	 also applies synonyms. -->
-    <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
+    <fieldType name="text_kstem" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
@@ -461,14 +480,59 @@
         <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
         -->
         <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="org.apache.lucene.analysis.en.KStemFilterFactory"/>
       </analyzer>
       <analyzer type="query">
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="org.apache.lucene.analysis.en.KStemFilterFactory"/>
+        <!-- <filter class="org.apache.lucene.analysis.en.KStemFilterFactory" protected="protwords.txt"/> -->
       </analyzer>
     </fieldType>
+
+    <!-- a basic general purpose text field utilizing KStemmer -->
+    <fieldType name="text_kstem_old" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" enablePositionIncrements="false" />
+        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" splitOnCaseChange="1"/>
+	<filter class="solr.ASCIIFoldingFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <!-- The LucidKStemmer currently requires a lowercase filter somewhere before it. -->
+        <filter class="org.apache.lucene.analysis.en.KStemFilterFactory"/>
+        <!-- <filter class="org.apache.lucene.analysis.en.KStemFilterFactory" protected="protwords.txt"/> -->
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="1"/>
+	<filter class="solr.ASCIIFoldingFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <!-- The LucidKStemmer currently requires a lowercase filter somewhere before it. -->
+        <filter class="org.apache.lucene.analysis.en.KStemFilterFactory"/>
+        <!-- <filter class="org.apache.lucene.analysis.en.KStemFilterFactory" protected="protwords.txt"/> -->
+      </analyzer>
+    </fieldType>
+
+
+    <!-- Used for exact match. Not stemmed or lemmafied -->
+	<fieldType name="textexact" class="solr.TextField" positionIncrementGap="100">
+	    <analyzer type="index">
+	      <tokenizer class="solr.StandardTokenizerFactory"/>
+	      <filter class="solr.StandardFilterFactory"/>
+	      <filter class="solr.ASCIIFoldingFilterFactory"/>
+	      <filter class="solr.LowerCaseFilterFactory"/>
+	    </analyzer>
+	    <analyzer type="query">
+	      <tokenizer class="solr.StandardTokenizerFactory"/>
+	      <filter class="solr.StandardFilterFactory"/>
+	      <filter class="solr.ASCIIFoldingFilterFactory"/>
+	      <filter class="solr.LowerCaseFilterFactory"/>
+	    </analyzer>
+	</fieldType>
+
 
     <!-- A text field with defaults appropriate for English: it
          tokenizes with StandardTokenizer, removes English stop words
@@ -776,18 +840,6 @@
         <!-- for any non-CJK -->
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.CJKBigramFilterFactory"/>
-      </analyzer>
-    </fieldType>
-
-    <!-- Kurdish -->
-    <fieldType name="text_ckb" class="solr.TextField" positionIncrementGap="100">
-      <analyzer>
-        <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.SoraniNormalizationFilterFactory"/>
-        <!-- for any latin text -->
-        <filter class="solr.LowerCaseFilterFactory"/>
-        <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_ckb.txt"/>
-        <filter class="solr.SoraniStemFilterFactory"/>
       </analyzer>
     </fieldType>
 

@@ -13,7 +13,7 @@ zk_standalone=1
 
 username="amir"
 # zookeeper="localhost" easier to have the first one become the zookeeper
-solr_path="$root_path/solr-4.7.0"
+solr_path="$root_path/solr-4.7.2"
 solrj_path="$root_path/solrj"
 config_path="$root_path/configs"
 data_path="$root_path/data"
