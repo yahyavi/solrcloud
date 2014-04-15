@@ -1,3 +1,8 @@
+#########################################
+#       GNU GPL License v3              #
+#       Author: Amir Yahyavi            #
+#########################################
+
 #!/bin/bash
 
 if [[ -z "$root_path" ]]; then
