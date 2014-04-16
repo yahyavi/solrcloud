@@ -1,5 +1,9 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.net.InetAddress;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import org.apache.solr.client.solrj.SolrQuery;
@@ -50,8 +54,12 @@ public class QueryLoop implements Runnable{
 		BufferedWriter out = null;
 		
 		try{
-			Process p = Runtime.getRuntime().exec("hostname");
-			String fname = p.toString() + "_" + thread_num + ".log";
+//			Process p = Runtime.getRuntime().exec("hostname");
+			InetAddress addr = InetAddress.getLocalHost();
+			String hostname = addr.getHostName();
+	        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+	        Date date = new java.util.Date();
+			String fname = dateFormat.format(date) + "_" +hostname.toString() +"_N" + node_num + "_T" + thread_num + ".log";
 			System.out.println(fname);
 			
 		    FileWriter fstream = new FileWriter(fname, false); //true tells to append data.
@@ -80,10 +88,11 @@ public class QueryLoop implements Runnable{
 				
 				if( (querycount % 1000) == 1 ){
 					long newtime = System.currentTimeMillis();
-//					System.out.println("1000 Queries, Time passed: " + (newtime - time) + ", #doc results: " + (resultcount - oldresultcount) );
-//					System.out.println(query);
+					System.out.println("ThreadID: " + thread_num + ", 1000 Queries, Time passed: " + (newtime - time) + ", #doc results: " + (resultcount - oldresultcount) );
+					System.out.println(query);
 	//				System.out.println(results);
-					out.write("1000 Queries, Time passed: " + (newtime - time) + ", #doc results: " + (resultcount - oldresultcount) );
+					out.write("ThreadID: " + thread_num + ", 1000 Queries, Time passed: " + (newtime - time) + ", #doc results: " + (resultcount - oldresultcount) + "\n" );
+					out.flush();
 					
 					time = newtime;
 					oldresultcount = resultcount;
