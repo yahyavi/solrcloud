@@ -3,9 +3,11 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 
 import java.net.MalformedURLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 import java.io.BufferedReader;
-
 import java.io.FileReader;
 
 
@@ -60,8 +62,11 @@ public class SolrJSearcher {
 	
 	Runnable[] r = new QueryLoop[num_query_threads];
 	Thread[]   t = new Thread[num_query_threads];
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+    Date date = new java.util.Date();
+	String mdate = dateFormat.format(date);
 	for(int i=0; i < num_query_threads; i++){
-		r[i] = new QueryLoop(hosts, i, qs, node_num, jettyport);
+		r[i] = new QueryLoop(hosts, i, qs, node_num, jettyport, mdate);
 		t[i] = new Thread(r[i]);
 		t[i].start();
 	}

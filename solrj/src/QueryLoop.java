@@ -16,17 +16,19 @@ public class QueryLoop implements Runnable{
 	String[] hosts;
 	int node_num;
 	String[] qs;
+	String date = "";
 	int len = -1;
 	int thread_num = -1;
 	int jettyport = -1;
 	
-	QueryLoop(String[] hs, int t_num, String[] q, int n_num, int jp){
+	QueryLoop(String[] hs, int t_num, String[] q, int n_num, int jp, String dt){
 		hosts = hs;
 		node_num = n_num;
 		thread_num = t_num;
 		qs = q;
 		len = q.length;
 		jettyport = jp;
+		date = dt;
 		
 		
 		
@@ -57,9 +59,7 @@ public class QueryLoop implements Runnable{
 //			Process p = Runtime.getRuntime().exec("hostname");
 			InetAddress addr = InetAddress.getLocalHost();
 			String hostname = addr.getHostName();
-	        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-	        Date date = new java.util.Date();
-			String fname = dateFormat.format(date) + "_" +hostname.toString() +"_N" + node_num + "_T" + thread_num + ".log";
+			String fname = date + "_" +hostname.toString() +"_N" + node_num + "_T" + thread_num + ".log";
 			System.out.println(fname);
 			
 		    FileWriter fstream = new FileWriter(fname, false); //true tells to append data.
