@@ -1,6 +1,5 @@
 
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
 
 import java.net.MalformedURLException;
 import java.text.DateFormat;
