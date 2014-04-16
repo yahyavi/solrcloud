@@ -40,6 +40,7 @@ zk_num=3
 # reduced by 1 since they are added in the for
 zk_baseclientport=2180
 zk_baseport=2887
+num_query_threads=2
 
 zookeepers=(  "localhost" "localhost" "localhost")
 
