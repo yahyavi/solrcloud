@@ -1,3 +1,5 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.Random;
 
 import org.apache.solr.client.solrj.SolrQuery;
@@ -6,16 +8,33 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 
 public class QueryLoop implements Runnable{
-	HttpSolrServer[] solr_nodes;
+	HttpSolrServer solr_node = null;
+	String[] hosts;
 	int node_num;
 	String[] qs;
 	int len = -1;
+	int thread_num = -1;
+	int jettyport = -1;
 	
-	QueryLoop(HttpSolrServer[] slrn, int n, String[] q){
-		solr_nodes = slrn;
-		node_num = n;
+	QueryLoop(String[] hs, int t_num, String[] q, int n_num, int jp){
+		hosts = hs;
+		node_num = n_num;
+		thread_num = t_num;
 		qs = q;
 		len = q.length;
+		jettyport = jp;
+		
+		
+		
+		  String server = String.format("http://%s:%d/solr", hosts[thread_num%node_num], jettyport+(thread_num%node_num));
+		  System.out.println(server);
+		  try{
+			  solr_node = new HttpSolrServer(server);
+		  }catch(Exception e){
+			  e.printStackTrace();
+		  }
+		  
+		
 	}
 	
 	
@@ -27,43 +46,62 @@ public class QueryLoop implements Runnable{
 		long oldresultcount = 1;
 		long time = System.currentTimeMillis();
 		System.out.println("Starting");
-		while(true){
-			
-			SolrQuery query = new SolrQuery();
-			query.setQuery(qs[ran.nextInt(len)]);
-//			query.setQuery("test sony");
-			//query.addFilterQuery("cat:electronics","store:amazon.com");
-//			query.addFilterQuery("blogurl:"+"http\\" + "://www.bloomberg.com");
-//			query.setFields("id","blogurl","url","published");
-//			query.set("defType", "edismax");
-//			query.setStart(0);    
+
+		BufferedWriter out = null;
 		
-//			System.out.println(query.toString());
-			SolrDocumentList results = null;
-			try{
-				QueryResponse response = solr_nodes[node_num].query(query);
-				results = response.getResults();
-				querycount++;
-				for (int i = 0; i < results.size(); ++i) {
-//				  System.out.println(results.get(i));
-				  resultcount++;
-					}
+		try{
+			Process p = Runtime.getRuntime().exec("hostname");
+			String fname = p.toString() + "_" + thread_num;
 			
-				}catch(Exception e){
-					e.printStackTrace();
-			}
-			
-			if( (querycount % 1000) == 1 ){
-				long newtime = System.currentTimeMillis();
-				System.out.println("1000 Queries, Time passed: " + (newtime - time) + ", #doc results: " + (resultcount - oldresultcount) );
-				System.out.println(query);
-//				System.out.println(results);
+		    FileWriter fstream = new FileWriter(fname, false); //true tells to append data.
+		    out = new BufferedWriter(fstream);
+			while(true){
 				
-				time = newtime;
-				oldresultcount = resultcount;
-			}
+				SolrQuery query = new SolrQuery();
+				query.setQuery(qs[ran.nextInt(len)]);
+	//			query.setQuery("test sony");
+				//query.addFilterQuery("cat:electronics","store:amazon.com");
+	//			query.addFilterQuery("blogurl:"+"http\\" + "://www.bloomberg.com");
+	//			query.setFields("id","blogurl","url","published");
+	//			query.set("defType", "edismax");
+	//			query.setStart(0);    
 			
+	//			System.out.println(query.toString());
+				SolrDocumentList results = null;
+					QueryResponse response = solr_node.query(query);
+					results = response.getResults();
+					querycount++;
+					for (int i = 0; i < results.size(); ++i) {
+	//				  System.out.println(results.get(i));
+					  resultcount++;
+						}
+				
+				
+				if( (querycount % 1000) == 1 ){
+					long newtime = System.currentTimeMillis();
+					System.out.println("1000 Queries, Time passed: " + (newtime - time) + ", #doc results: " + (resultcount - oldresultcount) );
+					System.out.println(query);
+	//				System.out.println(results);
+					
+					time = newtime;
+					oldresultcount = resultcount;
+					}
+				
+			}//while
+			
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(-1);
 		}
+		try{ 
+			if (out != null){
+				out.close();
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 	}
+
 }
 

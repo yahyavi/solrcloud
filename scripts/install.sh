@@ -28,4 +28,5 @@ cd ..
 echo
 echo "Now you can use deploynodes, or newnode to start new instances. "
 
+cd $scripts_path
 ./genprop.sh

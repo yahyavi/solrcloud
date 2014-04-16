@@ -14,7 +14,7 @@ public class SolrJSearcher {
 	 
 	  String shost="", queries_file="";
 	  Properties properties;
-	  int node_num=0, shard_num=0, zk_standalone=0, zk_num=0, jettyport=0;
+	  int node_num=0, shard_num=0, zk_standalone=0, zk_num=0, jettyport=0, num_query_threads = 0;
 	  try (FileReader reader = new FileReader("config.properties")) {
 			properties = new Properties();
 			properties.load(reader);
@@ -25,6 +25,7 @@ public class SolrJSearcher {
 			zk_num = Integer.parseInt(properties.getProperty("zk_num"));
 			jettyport = Integer.parseInt(properties.getProperty("jettyport"));
 			queries_file = properties.getProperty("samplequery_file");
+			num_query_threads = Integer.parseInt(properties.getProperty("num_query_threads"));
 			System.out.println(shost);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -35,18 +36,7 @@ public class SolrJSearcher {
 	  String[] hosts = shost.split(" ");
 	  System.out.println(String.format("node_num: %d, shard_num: %d, zk_standalone: %d, zk_num: %d, jettyport: %d", node_num, shard_num, zk_standalone, zk_num, jettyport) );
 	  
-	  
-	  HttpSolrServer[] solr_nodes = new HttpSolrServer[node_num];
-	  for( int i=0; i < node_num; i++){
-		  String server = String.format("http://%s:%d/solr", hosts[i], jettyport+i);
-		  System.out.println(server);
-		  try{
-			  solr_nodes[i] = new HttpSolrServer(server);
-		  }catch(Exception e){
-			  e.printStackTrace();
-		  }
-		  
-	  }
+
 	 
 	StringBuffer sbuf = new StringBuffer();
 	try{
@@ -68,10 +58,10 @@ public class SolrJSearcher {
 	System.out.println("First: "+qs[0]);
 	System.out.println("Last: "+qs[len-1]);
 	
-	Runnable[] r = new QueryLoop[node_num];
-	Thread[]   t = new Thread[node_num];
-	for(int i=0; i < node_num; i++){
-		r[i] = new QueryLoop(solr_nodes, i, qs);
+	Runnable[] r = new QueryLoop[num_query_threads];
+	Thread[]   t = new Thread[num_query_threads];
+	for(int i=0; i < num_query_threads; i++){
+		r[i] = new QueryLoop(hosts, i, qs, node_num, jettyport);
 		t[i] = new Thread(r[i]);
 		t[i].start();
 	}
