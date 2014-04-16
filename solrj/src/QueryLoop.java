@@ -51,7 +51,8 @@ public class QueryLoop implements Runnable{
 		
 		try{
 			Process p = Runtime.getRuntime().exec("hostname");
-			String fname = p.toString() + "_" + thread_num;
+			String fname = p.toString() + "_" + thread_num + ".log";
+			System.out.println(fname);
 			
 		    FileWriter fstream = new FileWriter(fname, false); //true tells to append data.
 		    out = new BufferedWriter(fstream);
@@ -79,9 +80,10 @@ public class QueryLoop implements Runnable{
 				
 				if( (querycount % 1000) == 1 ){
 					long newtime = System.currentTimeMillis();
-					System.out.println("1000 Queries, Time passed: " + (newtime - time) + ", #doc results: " + (resultcount - oldresultcount) );
-					System.out.println(query);
+//					System.out.println("1000 Queries, Time passed: " + (newtime - time) + ", #doc results: " + (resultcount - oldresultcount) );
+//					System.out.println(query);
 	//				System.out.println(results);
+					out.write("1000 Queries, Time passed: " + (newtime - time) + ", #doc results: " + (resultcount - oldresultcount) );
 					
 					time = newtime;
 					oldresultcount = resultcount;
