@@ -66,7 +66,7 @@ public class SolrJSearcher {
     Date date = new java.util.Date();
 	String mdate = dateFormat.format(date);
 	for(int i=0; i < num_query_threads; i++){
-		r[i] = new QueryLoop(hosts, i, qs, node_num, jettyport, mdate);
+		r[i] = new QueryLoop(hosts, i, qs, node_num, jettyport, mdate, zk_num);
 		t[i] = new Thread(r[i]);
 		t[i].start();
 	}
