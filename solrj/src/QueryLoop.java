@@ -53,6 +53,7 @@ public class QueryLoop implements Runnable{
 		long oldresultcount = 1;
 		long time = System.currentTimeMillis();
 		double timesum = 0;
+		double docsum = 0;
 		int seccount = 0;
 		System.out.println("Starting");
 
@@ -97,14 +98,15 @@ public class QueryLoop implements Runnable{
 					out.write("ThreadID: " + thread_num + ", 1000 Queries, Time passed: " + (newtime - time) + ", #doc results: " + (resultcount - oldresultcount) + "\n" );
 					out.flush();
 					timesum += newtime - time;
+					docsum += (resultcount - oldresultcount);
 					
 					time = newtime;
 					oldresultcount = resultcount;
 					seccount++;
-					if (seccount>=900){
+					if (seccount>=600){
 						out.write("Average Time:"+ timesum/seccount +"\n");
 						out.flush();
-						System.out.println(("Average Time:"+ timesum/seccount +"\n"));
+						System.out.println(("Average Time:"+ timesum/seccount + ", Average Docs: " +  docsum/seccount +"\n"));
 						break;
 					}
 					}
