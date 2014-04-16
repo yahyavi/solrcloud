@@ -103,7 +103,7 @@ public class QueryLoop implements Runnable{
 					time = newtime;
 					oldresultcount = resultcount;
 					seccount++;
-					if (seccount>=600){
+					if (seccount>=60){
 						out.write("Average Time:"+ timesum/seccount +"\n");
 						out.flush();
 						System.out.println(("Average Time:"+ timesum/seccount + ", Average Docs: " +  docsum/seccount +"\n"));
