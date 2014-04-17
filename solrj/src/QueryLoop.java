@@ -8,6 +8,11 @@ import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 
+/////////////////////////////////////////
+//      GNU GPL License v3             //
+//      Author: Amir Yahyavi           //
+/////////////////////////////////////////
+
 public class QueryLoop implements Runnable{
 	HttpSolrServer solr_node = null;
 	String[] hosts;
@@ -60,18 +65,18 @@ public class QueryLoop implements Runnable{
 		BufferedWriter out = null;
 		
 		try{
-//			Process p = Runtime.getRuntime().exec("hostname");
 			InetAddress addr = InetAddress.getLocalHost();
 			String hostname = addr.getHostName();
 			String fname = date + "_" +hostname.toString() +"_N" + node_num  + "_S" + shard_num + "_Z" + zk_num + "_T" + thread_num + ".log";
 			System.out.println(fname);
 			
-		    FileWriter fstream = new FileWriter(fname, false); //true tells to append data.
+		    FileWriter fstream = new FileWriter(fname, false); 
 		    out = new BufferedWriter(fstream);
 			while(true){
 				
 				SolrQuery query = new SolrQuery();
 				query.setQuery(qs[ran.nextInt(len)]);
+				//if we want to restrict other fields
 	//			query.setQuery("test sony");
 				//query.addFilterQuery("cat:electronics","store:amazon.com");
 	//			query.addFilterQuery("blogurl:"+"http\\" + "://www.bloomberg.com");

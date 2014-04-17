@@ -9,6 +9,10 @@ import java.util.Properties;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+/////////////////////////////////////////
+//      GNU GPL License v3             //
+//      Author: Amir Yahyavi           //
+/////////////////////////////////////////
 
 public class SolrJSearcher {
   public static void main(String[] args) throws MalformedURLException, SolrServerException {
