@@ -1,0 +1,14 @@
+#/bin/bash
+
+# Don't run this, this is an example of how I used NFS files, and localfiles to setup the system
+
+# local_path="$local_path"
+# "has these folders: localdata/data, has q.txt"  and  "solrcloud" that gets created.
+# cloud_path="/amircloud/clouddata"
+#  Has the following:
+# configs    solr-4.7.2.tgz  solrj.jar
+# config.sh  q.txt  solrcloud(for github clone)       zookeeper-3.4.6.tar.gz
+
+
+# cd $local_path; rm -rf solrcloud;cp -r $cloud_path/solrcloud .;rm -rf $local_path/solrcloud/data;cd $local_path/solrcloud;ln -s ../gnowit/data/ .; rm -rf $local_path/solrcloud/configs;cd $local_path/solrcloud;ln -s $cloud_path/configs .;rm -f $local_path/solrcloud/scripts/config.sh; cd $local_path/solrcloud/scripts; ln -s $cloud_path/config.sh .;./genprop.sh;cd $local_path/solrcloud/solrj;ln -s $cloud_path/solrj.jar .;cp -n $cloud_path/solr-4.7.2.tgz $local_path/solrcloud/; cp -n $cloud_path/zookeeper-3.4.6.tar.gz $local_path/solrcloud/;cd $local_path/solrcloud/scripts;./install.sh;
+
