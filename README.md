@@ -35,8 +35,8 @@ These are scripts and code I wrote for a short-term 5 week project on testing So
 | File/Folder Name  | Description |
 | ------------- | ------------- |
 | Solrj  |  Contains the SolrJ java sources that are designed to read and stress the servers using the q.txt queries. You can create a jar file using the build.xml file to easily deploy and run this. It creates a num threads threads as defined in the config.sh file. |
-| data  |  Contains the main XML data files (with current de- fault name Solrn\#.xml) and a queries file called q.txt. |
-| configs  |  Contains the schema and solrconfig files. |
+| data  |  Contains the main XML data files (with current de- fault name Solrn\#.xml) and a queries file called q.txt. Copy your data files and query files here.  |
+| configs  |  Contains the schema and solrconfig files. Replace with your config files and schema. |
 | zk  |  Only exists so so zookeeper id files can be created. |
 | logs.tar.gz  |  The logs from my runs. |
 
