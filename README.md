@@ -8,7 +8,7 @@ These are scripts and code I wrote for a short-term 5 week project on testing So
 
 ==================================================
 Table 1: Table of scripts
-
+--------------------------------------------------
 clean.sh	Cleans XML data files of non-utf and control characters that cause Post utility to crash. Currently it doesn’t enforce ASCII coding but if that’s necessary, change the command in the script to the commented ASCII version.
 --------------------------------------------------
 index.sh	Will use Post utility on local node\#1, with the XML datafile \#2.
@@ -43,7 +43,7 @@ zkdeploy.sh	Creates and starts new local zookeeper nodes according to config.sh 
 
 ==================================================
 Table 2: Table of folders
-
+--------------------------------------------------
 Solrj	Contains the SolrJ java sources that are designed to read and stress the servers using the q.txt queries. You can create a jar file using the build.xml file to easily deploy and run this. It creates a num threads threads as defined in the config.sh file.
 --------------------------------------------------
 data	Contains the main XML data files (with current de- fault name Solrn\#.xml) and a queries file called q.txt
