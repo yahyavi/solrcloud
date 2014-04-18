@@ -30,7 +30,7 @@ These are scripts and code I wrote for a short-term 5 week project on testing So
 
 --------------------------------------------------
 
-### Table 2: Table of folders
+### Table 2: Table of main folders & files
 
 | File/Folder Name  | Description |
 | ------------- | ------------- |
