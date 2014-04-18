@@ -1,5 +1,4 @@
-SolrCloud
-=========
+#SolrCloud
 
 Scripts for testing SolrCloud performance. 
 
