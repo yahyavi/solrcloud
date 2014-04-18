@@ -11,11 +11,11 @@ Table 1: Table of scripts
 
 clean.sh	Cleans XML data files of non-utf and control characters that cause Post utility to crash. Currently it doesn’t enforce ASCII coding but if that’s necessary, change the command in the script to the commented ASCII version.
 --------------------------------------------------
-index.sh	Will use Post utility on local node#1, with the XML datafile #2.
+index.sh	Will use Post utility on local node\\#1, with the XML datafile \#2.
 --------------------------------------------------
 newzk.sh	Used to create a new local zookeeper node and to start it.
 --------------------------------------------------
-split.sh	Used to split a very large xml file #1 into #2 files with the same number of lines. It is mostly used for files larger than 1.5GB. The last doc inside the split file must be handled/corrected manually.
+split.sh	Used to split a very large xml file \#1 into \#2 files with the same number of lines. It is mostly used for files larger than 1.5GB. The last doc inside the split file must be handled/corrected manually.
 --------------------------------------------------
 config.sh	The main configuration file.  Must be adjusted to reflect the parameters in your setup including different folders, number of nodes, shards, etc.
 --------------------------------------------------
@@ -35,7 +35,7 @@ utils.sh	Includes a couple of common commands used by sev- eral scripts.
 --------------------------------------------------
 genprop.sh	Creates a properties files to be used by the SolrJ file.
 --------------------------------------------------
-newnode.sh	Creates a new local node #1, also passes the rest of parameters used to the starting Solr server.  Copies the config files from config path.
+newnode.sh	Creates a new local node \#1, also passes the rest of parameters used to the starting Solr server.  Copies the config files from config path.
 --------------------------------------------------
 smaller.sh	This is used for quick testing.  Creates smaller files with n lines named U-”filename” which can be used for quick deployment and testing.
 --------------------------------------------------
@@ -46,7 +46,7 @@ Table 2: Table of folders
 
 Solrj	Contains the SolrJ java sources that are designed to read and stress the servers using the q.txt queries. You can create a jar file using the build.xml file to easily deploy and run this. It creates a num threads threads as defined in the config.sh file.
 --------------------------------------------------
-data	Contains the main XML data files (with current de- fault name Solrn#.xml) and a queries file called q.txt
+data	Contains the main XML data files (with current de- fault name Solrn\#.xml) and a queries file called q.txt
 --------------------------------------------------
 configs	Contains the schema and solrconfig files.
 --------------------------------------------------
