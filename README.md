@@ -2,7 +2,7 @@
 
 Scripts for testing SolrCloud performance. 
 
-These are scripts and code I wrote for a short-term 5 week project on testing SolrCloud perofrmance. See report.pdf for complete description of what scripts do and how to use them, and the initial results. This was a short term study so take the results in the report with a grain of salt. I did not have enough time for a comprehensive study of how Solr and ZooKeepers work so the analysis may be incorrect. Here's a short description of repository file from the report.
+These are scripts and code I wrote for a short-term 5 week project on testing SolrCloud perofrmance. See report.pdf for complete description of what scripts do and how to use them, and the initial results. This was a short term study and I did not have enough time for a comprehensive study of how Solr and ZooKeepers work, so take the results and analysis in the report with a grain of salt. That said, the initial results seem stable enough to write the report. Here's a short description of repository file from the report.
 
 --------------------------------------------------
 
