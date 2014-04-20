@@ -4,7 +4,7 @@ Scripts for testing SolrCloud performance.
 
 These are scripts and code I wrote for a short-term 5 week project on testing SolrCloud perofrmance. See report.pdf for complete description of what scripts do and how to use them, and the initial results. This was a short term study and I did not have enough time for a comprehensive study of how Solr and ZooKeepers work, so take the results and analysis in the report with a grain of salt. That said, the initial results seem stable enough to write the report. Here's a short description of repository file from the report.
 
-Replace the data files in the data folder with your own. Also replace the config and schema files in the configs folder. I have a small description in the report of how I used these scripts using symlinks to locla folder for data files and synced profile for config files to deploy over several machines. 
+Replace the data files in the data folder with your own. Also replace the config and schema files in the configs folder. I have a small description in the report of how I used these scripts by using symlinks to local folders for data files and symlinks to a synced configs folder (on my network profile) to deploy over several machines. 
 
 --------------------------------------------------
 
