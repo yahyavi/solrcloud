@@ -10,7 +10,7 @@ if [[ -z "$root_path" ]]; then
 fi
 
 
-configed=1
+configed=0
 jettyport=8983 #default=8983
 node_num=2
 shard_num=2
